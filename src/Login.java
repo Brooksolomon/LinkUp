@@ -1,9 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Login extends JFrame {
+public class Login extends JFrame implements ActionListener {
     JPanel p1;
-    JLabel l1,l2;
+    JLabel l1,l2,l3;
     JTextField tf1;
     JPasswordField tf2;
     JButton b1,b2,b3;
@@ -16,16 +18,20 @@ public class Login extends JFrame {
 
         p1 = new JPanel(null);
         add(p1);
-
         l1 = new JLabel("Username:");
         l2 = new JLabel("Password:");
         l1.setFont(mf);
         l2.setFont(mf);
         l1.setBounds(60,40,80,40);
         l2.setBounds(60,90,80,40);
+        l3 = new JLabel("");
+        l3.setFont(mf);
+        l3.setBounds(150,10,200,40);
+        l3.setForeground(Color.red);
 
         p1.add(l1);
         p1.add(l2);
+        p1.add(l3);
 
         tf1 = new JTextField(20);
         tf2  = new JPasswordField(20);
@@ -40,6 +46,11 @@ public class Login extends JFrame {
         b2 = new JButton("Login");
         b3 = new JButton("Create account");
 
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+        b3.addActionListener(this);
+
+
         b1.setBounds(100,150,100,25);
         b2.setBounds(220,150,100,25);
         b3.setBounds(100,200,220,25);
@@ -51,10 +62,27 @@ public class Login extends JFrame {
         p1.add(b1);
         p1.add(b2);
         p1.add(b3);
+
+
+
+
+
         setVisible(true);
     }
     public static  void main(String[] args) {
          new Login();
 
+    }
+    public void actionPerformed(ActionEvent e)
+    {
+        if (e.getSource() == b1)
+        {
+            tf1.setText("");
+            tf2.setText("");
+        } else if (e.getSource() == b2) {
+            Main run = new Main();
+            run.Searchuser(tf1.getText(),tf2.getText(),l3);
+
+        }
     }
 }

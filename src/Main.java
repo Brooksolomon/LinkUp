@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.awt.*;
 import java.sql.*;
 
 public class Main {
@@ -5,8 +7,14 @@ public class Main {
 
     void Createuser(String fName, String lName, String userName, String email, String password) {
         connect();
-        User newus = new User(connection);
-        newus.insert_info(fName, lName, userName, email, password);
+        User newuser = new User(connection);
+        newuser.insert_info(fName, lName, userName, email, password);
+    }
+    void Searchuser(String username,String pass, JLabel l3)
+    {
+        connect();
+        User newuser = new User(connection);
+        newuser.get_user(username,pass,l3);
     }
 
 
@@ -42,7 +50,6 @@ class User {
 
     void insert_info(String fName, String lName, String userName, String email, String password) {
         try {
-            System.out.println("trying");
             PreparedStatement newe = connection.prepareStatement("insert into userdata values(?,?,?,?,?)");
             newe.setString(1, fName);
             newe.setString(2, lName);
@@ -55,6 +62,40 @@ class User {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+    }
+    void get_user(String username,String pass , JLabel l3)
+    {
+        try
+        {
+            PreparedStatement newe = connection.prepareStatement("select password from userdata where username = ? ");
+            newe.setString(1,username);
+            ResultSet answer = newe.executeQuery();
+            int count  =0;
+            String password=null;
+            while (answer.next()) {
+                password = answer.getString("password");
+                count++;
+            }
+            if (count == 0){
+                l3.setText("user not found ");
+            }
+            else if (!pass.equals(password))
+            {
+                l3.setText("password incorrect ");
+            }
+            else {
+                l3.setForeground(Color.green);
+                l3.setText("login successful ");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("user doesnt exist");
+            throw new RuntimeException(e);
+
+
+        }
+
     }
 }
 
