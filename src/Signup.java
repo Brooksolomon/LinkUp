@@ -1,7 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Signup extends JFrame {
+public class Signup extends JFrame implements ActionListener {
     JPanel p1;
     JLabel l1,l2,l3,l4,l5,l6;
     JTextField tf1,tf2,tf3,tf4;
@@ -73,6 +77,9 @@ public class Signup extends JFrame {
         b2.setBackground(new Color(57,185,255));
         b1.setForeground(Color.white);
         b2.setForeground(Color.white);
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+        b3.addActionListener(this);
 
 
         p1.add(b1);
@@ -87,4 +94,44 @@ public class Signup extends JFrame {
     {
         new Signup();
     }
+    public void actionPerformed(ActionEvent e)
+    {
+        if(e.getSource() == b1)
+        {
+            tf1.setText("");
+            tf2.setText("");
+            tf3.setText("");
+            tf4.setText("");
+            tf5.setText("");
+            tf6.setText("");
+        }
+        else if (e.getSource() == b2)
+        {
+            String fName  = tf1.getText();
+            String lName =tf2.getText();
+            String userName = tf3.getText();
+            String email = tf4.getText();
+            String password = tf5.getText();
+            String repeatPassword = tf6.getText();
+
+            Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+            Matcher mat = pattern.matcher(email);
+
+            if (fName.equals("") || lName.equals("") || userName.equals("") || email.equals("") ||  password.equals("") || repeatPassword.equals(""))
+            {
+                System.out.println("None of the fields can be empty");
+            } else if (tf5.getText().length() <8) {
+                System.out.println("Password has to be a length of 8 minimum");
+            } else if (!tf5.getText().equals(tf6.getText())) {
+                System.out.println("Passwords don't match");
+            } else if (!mat.matches()) {
+                System.out.println("not a valid email address");
+            }
+            else {
+                Main run = new Main();
+                run.Createuser(fName, lName, userName, email, password);
+            }
+        }
+    }
+
 }
