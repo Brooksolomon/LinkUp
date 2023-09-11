@@ -10,11 +10,11 @@ public class Main {
         User newuser = new User(connection);
         newuser.insert_info(fName, lName, userName, email, password);
     }
-    void Searchuser(String username,String pass, JLabel l3)
+    boolean Searchuser(String username,String pass, JLabel l3)
     {
         connect();
         User newuser = new User(connection);
-        newuser.get_user(username,pass,l3);
+         return newuser.get_user(username,pass,l3);
     }
 
 
@@ -64,7 +64,7 @@ class User {
         }
 
     }
-    void get_user(String username,String pass , JLabel l3)
+    boolean get_user(String username,String pass , JLabel l3)
     {
         try
         {
@@ -79,6 +79,7 @@ class User {
             }
             if (count == 0){
                 l3.setText("user not found ");
+                return false;
             }
             else if (!pass.equals(password))
             {
@@ -95,7 +96,7 @@ class User {
 
 
         }
-
+        return true ;
     }
 }
 
