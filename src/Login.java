@@ -4,64 +4,66 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Login extends JFrame implements ActionListener {
-    JPanel p1;
-    JLabel l1,l2,l3;
-    JTextField tf1;
-    JPasswordField tf2;
-    JButton b1,b2,b3;
-    Font mf = new Font("Arial", Font.PLAIN, 16);
+    JPanel panel1;
+    JLabel label1,label2,label3;
+    JTextField textfield1;
+    JPasswordField textfield2;
+    JButton button1,button2,button3;
+    Font myFont = new Font("Arial", Font.PLAIN, 16);
     Login(){
 
         setSize(450,300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Login");
 
-        p1 = new JPanel(null);
-        add(p1);
-        l1 = new JLabel("Username:");
-        l2 = new JLabel("Password:");
-        l1.setFont(mf);
-        l2.setFont(mf);
-        l1.setBounds(60,40,80,40);
-        l2.setBounds(60,90,80,40);
-        l3 = new JLabel("");
-        l3.setFont(mf);
-        l3.setBounds(150,10,200,40);
-        l3.setForeground(Color.red);
-
-        p1.add(l1);
-        p1.add(l2);
-        p1.add(l3);
-
-        tf1 = new JTextField(20);
-        tf2  = new JPasswordField(20);
-
-        tf1.setBounds(150,50,200,25);
-        tf2.setBounds(150,100,200,25);
-
-        p1.add(tf1);
-        p1.add(tf2);
-
-        b1 = new JButton("Cancel");
-        b2 = new JButton("Login");
-        b3 = new JButton("Create account");
-
-        b1.addActionListener(this);
-        b2.addActionListener(this);
-        b3.addActionListener(this);
+        panel1 = new JPanel(null);
+        add(panel1);
+       label1 = new JLabel("Username:");
+       label2 = new JLabel("Password:");
+       label1.setFont(myFont);
+       label2.setFont(myFont);
+       label1.setBounds(60,40,80,40);
+       label2.setBounds(60,90,80,40);
+       label3 = new JLabel("");
+       label3.setFont(myFont);
+       label3.setBounds(150,10,200,40);
+       label3.setForeground(Color.red);
 
 
-        b1.setBounds(100,150,100,25);
-        b2.setBounds(220,150,100,25);
-        b3.setBounds(100,200,220,25);
+        panel1.add(label1);
+        panel1.add(label2);
+        panel1.add(label3);
 
-        b1.setBackground(new Color(254,59,41));
-        b2.setBackground(new Color(57,185,255));
-        b1.setForeground(Color.white);
-        b2.setForeground(Color.white);
-        p1.add(b1);
-        p1.add(b2);
-        p1.add(b3);
+        textfield1 = new JTextField(20);
+        textfield2  = new JPasswordField(20);
+
+        textfield1.setBounds(150,50,200,25);
+        textfield2.setBounds(150,100,200,25);
+
+
+        panel1.add(textfield1);
+        panel1.add(textfield2);
+
+        button1 = new JButton("Cancel");
+        button2 = new JButton("Login");
+        button3 = new JButton("Create account");
+
+        button1.addActionListener(this);
+        button2.addActionListener(this);
+        button3.addActionListener(this);
+
+
+        button1.setBounds(100,150,100,25);
+        button2.setBounds(220,150,100,25);
+        button3.setBounds(100,200,220,25);
+
+        button1.setBackground(new Color(254,59,41));
+        button2.setBackground(new Color(57,185,255));
+        button1.setForeground(Color.white);
+        button2.setForeground(Color.white);
+        panel1.add(button1);
+        panel1.add(button2);
+        panel1.add(button3);
 
 
 
@@ -75,14 +77,14 @@ public class Login extends JFrame implements ActionListener {
     }
     public void actionPerformed(ActionEvent e)
     {
-        if (e.getSource() == b1)
+        if (e.getSource() == button1)
         {
-            tf1.setText("");
-            tf2.setText("");
-        } else if (e.getSource() == b2) {
+            textfield1.setText("");
+            textfield2.setText("");
+        } else if (e.getSource() == button2) {
             Main run = new Main();
-            run.Searchuser(tf1.getText(),tf2.getText(),l3);
-        } else if (e.getSource() == b3) {
+            run.Searchuser(textfield1.getText(),textfield2.getText(),label3);
+        } else if (e.getSource() == button3) {
             Signup sp = new Signup();
             this.dispose();
         }

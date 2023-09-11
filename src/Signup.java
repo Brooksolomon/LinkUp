@@ -6,12 +6,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Signup extends JFrame implements ActionListener {
-    JPanel p1;
-    JLabel l1,l2,l3,l4,l5,l6,l7;
-    JTextField tf1,tf2,tf3,tf4;
-    JPasswordField tf5,tf6;
-    JButton b1 ,b2,b3;
-    Font mf = new Font("Arial", Font.PLAIN, 16);
+    JPanel panel1;
+    JLabel label1,label2,label3,label4,label5,label6,label7;
+    JTextField textfield1,textfield2,textfield3,textfield4;
+    JPasswordField textfield5,textfield6;
+    JButton button1 ,button2,button3;
+    Font myfont = new Font("Arial", Font.PLAIN, 16);
 
 
     Signup(){
@@ -20,76 +20,76 @@ public class Signup extends JFrame implements ActionListener {
         setSize(500,600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Sign up");
-        p1 = new JPanel(null);
-        l1 = new JLabel("First Name:");
-        l2 = new JLabel("Last Name:");
-        l3 = new JLabel("Username:");
-        l4 = new JLabel("Email:");
-        l5 = new JLabel("Password:");
-        l6 = new JLabel("Re-enter password:");
-        l7  = new JLabel("");
-        l1.setFont(mf);
-        l2.setFont(mf);
-        l3.setFont(mf);
-        l4.setFont(mf);
-        l5.setFont(mf);
-        l6.setFont(mf);
-        l7.setFont(mf);
-        l1.setBounds(96,40,100,100);
-        l2.setBounds(96,90,100,100);
-        l3.setBounds(100,140,100,100);
-        l4.setBounds(130,190,100,100);
-        l5.setBounds(100,240,100,100);
-        l6.setBounds(40,290,150,100);
-        l7.setBounds(150,5,300,100);
-        l7.setForeground(Color.red);
-        p1.add(l1);
-        p1.add(l2);
-        p1.add(l3);
-        p1.add(l4);
-        p1.add(l5);
-        p1.add(l6);
-        p1.add(l7);
-        add(p1);
-        tf1  = new JTextField(20);
-        tf2  = new JTextField(20);
-        tf3  = new JTextField(20);
-        tf4  = new JTextField(20);
-        tf5  = new JPasswordField(20);
-        tf6  = new JPasswordField(20);
+        panel1 = new JPanel(null);
+        label1 = new JLabel("First Name:");
+        label2 = new JLabel("Last Name:");
+        label3 = new JLabel("Username:");
+        label4 = new JLabel("Email:");
+        label5 = new JLabel("Password:");
+        label6 = new JLabel("Re-enter password:");
+        label7  = new JLabel("");
+        label1.setFont(myfont);
+        label2.setFont(myfont);
+        label3.setFont(myfont);
+        label4.setFont(myfont);
+        label5.setFont(myfont);
+        label6.setFont(myfont);
+        label7.setFont(myfont);
+        label1.setBounds(96,40,100,100);
+        label2.setBounds(96,90,100,100);
+        label3.setBounds(100,140,100,100);
+        label4.setBounds(130,190,100,100);
+        label5.setBounds(100,240,100,100);
+        label6.setBounds(40,290,150,100);
+        label7.setBounds(150,5,300,100);
+        label7.setForeground(Color.red);
+        panel1.add(label1);
+        panel1.add(label2);
+        panel1.add(label3);
+        panel1.add(label4);
+        panel1.add(label5);
+        panel1.add(label6);
+        panel1.add(label7);
+        add(panel1);
+        textfield1  = new JTextField(20);
+        textfield2  = new JTextField(20);
+        textfield3  = new JTextField(20);
+        textfield4  = new JTextField(20);
+        textfield5  = new JPasswordField(20);
+        textfield6  = new JPasswordField(20);
 
-        tf1.setBounds(200,78,200,25);
-        tf2.setBounds(200,128,200,25);
-        tf3.setBounds(200,178,200,25);
-        tf4.setBounds(200,228,200,25);
-        tf5.setBounds(200,278,200,25);
-        tf6.setBounds(200,328,200,25);
+        textfield1.setBounds(200,78,200,25);
+        textfield2.setBounds(200,128,200,25);
+        textfield3.setBounds(200,178,200,25);
+        textfield4.setBounds(200,228,200,25);
+        textfield5.setBounds(200,278,200,25);
+        textfield6.setBounds(200,328,200,25);
 
-        p1.add(tf1);
-        p1.add(tf2);
-        p1.add(tf3);
-        p1.add(tf4);
-        p1.add(tf5);
-        p1.add(tf6);
+        panel1.add(textfield1);
+        panel1.add(textfield2);
+        panel1.add(textfield3);
+        panel1.add(textfield4);
+        panel1.add(textfield5);
+        panel1.add(textfield6);
 
-        b1  = new JButton("Cancel");
-        b2 = new JButton("Sign up");
-        b3 = new JButton("Already have an account");
-        b1.setBounds(130,400,100,25);
-        b2.setBounds(250,400,100,25);
-        b3.setBounds(140,440,200,25);
-        b1.setBackground(new Color(254,59,41));
-        b2.setBackground(new Color(57,185,255));
-        b1.setForeground(Color.white);
-        b2.setForeground(Color.white);
-        b1.addActionListener(this);
-        b2.addActionListener(this);
-        b3.addActionListener(this);
+        button1  = new JButton("Cancel");
+        button2 = new JButton("Sign up");
+        button3 = new JButton("Already have an account");
+        button1.setBounds(130,400,100,25);
+        button2.setBounds(250,400,100,25);
+        button3.setBounds(140,440,200,25);
+        button1.setBackground(new Color(254,59,41));
+        button2.setBackground(new Color(57,185,255));
+        button1.setForeground(Color.white);
+        button2.setForeground(Color.white);
+        button1.addActionListener(this);
+        button2.addActionListener(this);
+        button3.addActionListener(this);
 
 
-        p1.add(b1);
-        p1.add(b2);
-        p1.add(b3);
+        panel1.add(button1);
+        panel1.add(button2);
+        panel1.add(button3);
 
 
         setVisible(true);
@@ -101,48 +101,48 @@ public class Signup extends JFrame implements ActionListener {
     }
     public void actionPerformed(ActionEvent e)
     {
-        if(e.getSource() == b1)
+        if(e.getSource() == button1)
         {
-            tf1.setText("");
-            tf2.setText("");
-            tf3.setText("");
-            tf4.setText("");
-            tf5.setText("");
-            tf6.setText("");
+            textfield1.setText("");
+            textfield2.setText("");
+            textfield3.setText("");
+            textfield4.setText("");
+            textfield5.setText("");
+            textfield6.setText("");
         }
-        else if (e.getSource() == b2)
+        else if (e.getSource() == button2)
         {
-            String fName  = tf1.getText();
-            String lName =tf2.getText();
-            String userName = tf3.getText();
-            String email = tf4.getText();
-            String password = tf5.getText();
-            String repeatPassword = tf6.getText();
+            String fName  = textfield1.getText();
+            String lName =textfield2.getText();
+            String userName = textfield3.getText();
+            String email = textfield4.getText();
+            String password = textfield5.getText();
+            String repeatPassword = textfield6.getText();
 
             Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
             Matcher mat = pattern.matcher(email);
 
             if (fName.equals("") || lName.equals("") || userName.equals("") || email.equals("") ||  password.equals("") || repeatPassword.equals(""))
             {
-                l7.setText("None of the fields can be empty");
-            } else if (tf5.getText().length() <8) {
-                l7.setText("Password has to be a length of 8 minimum");
+                label7.setText("None of the fields can be empty");
+            } else if (textfield5.getText().length() <8) {
+                label7.setText("Password has to be a length of 8 minimum");
                 System.out.println();
-            } else if (!tf5.getText().equals(tf6.getText())) {
-                l7.setText("Passwords don't match");
+            } else if (!textfield5.getText().equals(textfield6.getText())) {
+                label7.setText("Passwords don't match");
             } else if (!mat.matches()) {
-                l7.setText("not a valid email address");
-            } else if (new Main().Searchuser(tf3.getText(),tf5.getText(),new JLabel())) {
-                l7.setText("Username Taken");
+                label7.setText("not a valid email address");
+            } else if (new Main().Searchuser(textfield3.getText(),textfield5.getText(),new JLabel())) {
+                label7.setText("Username Taken");
             } else {
                 Main run = new Main();
                 run.Createuser(fName, lName, userName, email, password);
-                l7.setForeground(Color.green);
-                l7.setText("Account Created");
+                label7.setForeground(Color.green);
+                label7.setText("Account Created");
             }
 
         }
-        else if (e.getSource() == b3)
+        else if (e.getSource() == button3)
         {
             Login lg =  new Login();
             this.dispose();
