@@ -20,7 +20,8 @@ public class Main {
             connection = DriverManager.getConnection(constring);
             System.out.println("connected");
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("failed");
+            throw new RuntimeException(e);
         }
     }
 
@@ -41,7 +42,8 @@ class User {
 
     void insert_info(String fName, String lName, String userName, String email, String password) {
         try {
-            PreparedStatement newe = connection.prepareStatement("insert into staff values(?,?,?,?,?,?)");
+            System.out.println("trying");
+            PreparedStatement newe = connection.prepareStatement("insert into userdata values(?,?,?,?,?)");
             newe.setString(1, fName);
             newe.setString(2, lName);
             newe.setString(3, userName);
