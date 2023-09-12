@@ -5,6 +5,7 @@ import java.sql.*;
 public class Main {
     public Connection connection;
 
+
     void Createuser(String fName, String lName, String userName, String email, String password) {
         connect();
         User newuser = new User(connection);
@@ -15,6 +16,12 @@ public class Main {
         connect();
         User newuser = new User(connection);
          return newuser.get_user(username,pass,l3,myframe);
+    }
+    void createpost(String title , String body,String username)
+    {
+        connect();
+        post_managment newp = new post_managment(connection);
+        newp.post(title,body,username);
     }
 
 
@@ -89,7 +96,7 @@ class User {
                 l3.setForeground(Color.green);
                 l3.setText("login successful ");
                 myframe.dispose();
-                new Homepage();
+                new Homepage(username);
 
             }
 
@@ -102,5 +109,29 @@ class User {
         return true ;
     }
 }
+class post_managment
+{
+    Connection connection;
+
+    post_managment(Connection connection) {
+        this.connection = connection;
+    }
+
+    void post(String title, String body,String username){
+        try{
+            PreparedStatement newe = connection.prepareStatement("insert into posts(title,body,likes,user_name) values(?,?,?,?)");
+            newe.setString(1, title);
+            newe.setString(2, body);
+            newe.setInt(3, 0);
+            newe.setString(4, username);
+            System.out.println("added");
+            newe.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+
 
 

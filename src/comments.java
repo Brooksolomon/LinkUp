@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class comments extends JFrame implements ActionListener {
+    String username;
     JPanel panel1,panel2,panel3;
 
     JLabel logo,label1,label2,label3,label4;
@@ -11,8 +12,9 @@ public class comments extends JFrame implements ActionListener {
     Color mycolor = new Color(15,186,129);
     Color totalwhite  = new Color(255,255,255);
 
-    comments()
+    comments(String username)
     {
+        this.username = username;
         this.sidebar(3);
         panel2 = new JPanel(null);
         panel3 = new JPanel(null);
@@ -107,13 +109,13 @@ public class comments extends JFrame implements ActionListener {
         if (e.getSource()==button1)
         {
             this.dispose();
-            new Homepage();
+            new Homepage(username);
         } else if (e.getSource() == button2) {
             this.dispose();
-            new posts();
+            new posts(username);
         } else if (e.getSource() ==button4) {
             this.dispose();
-            new likes();
+            new likes(username);
         } else if (e.getSource() == button5) {
             this.dispose();
             new Login();

@@ -1,20 +1,30 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Line2D;
+import java.util.concurrent.TimeUnit;
 
 public class Homepage extends JFrame implements ActionListener {
+    String username;
     JPanel panel1,panel2,panel3;
     JLabel logo,label1,label2,label3,label4;
+    JLabel pagelabel;
+    JTextField postTitle;
+    JTextArea postBody;
+    JButton postButton;
     JButton button1,button2,button3,button4,button5;
     Color mycolor = new Color(15,186,129);
     Color totalwhite  = new Color(255,255,255);
-    Homepage(){
+    Homepage(String username){
+        this.username = username;
         this.sidebar(1);
-        panel2 = new JPanel(null);
+        this.feed();
+
         panel3 = new JPanel(null);
 
-        panel2.setBackground(Color.green);
+
         panel3.setBackground(Color.blue);
 
         setSize(1920,1080);
@@ -34,7 +44,7 @@ public class Homepage extends JFrame implements ActionListener {
     }
     public static void main(String [] args)
     {
-        new Homepage();
+        new Homepage("brooksolo");
     }
     public void  sidebar(int num)
     {
@@ -99,7 +109,43 @@ public class Homepage extends JFrame implements ActionListener {
         button4.addActionListener(this);
         button5.addActionListener(this);
 
+
+
         panel1.setPreferredSize(new Dimension(300,200));
+
+
+    }
+    public void feed()
+    {
+        panel2 = new JPanel(null);
+        panel2.setBackground(totalwhite);
+        pagelabel = new JLabel("Home");
+        panel2.add(pagelabel);
+        pagelabel.setBounds(30,20,100,40);
+        pagelabel.setFont(new Font("Arial", Font.PLAIN, 30));
+
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        panel2.setBorder(blackline);
+
+        postTitle = new JTextField("Post title",300);
+        postTitle.setBounds(30,80,300,50);
+        panel2.add(postTitle);
+
+
+
+        postBody = new JTextArea(10,500);
+        postBody.setText("Post body here");
+        postBody.setBounds(30,150,1200,100);
+        postBody.setBorder(blackline);
+        panel2.add(postBody);
+
+        postButton = new JButton("Post");
+        postButton.setBounds(1130,270,100,50);
+        postButton.setBackground(mycolor);
+        panel2.add(postButton);
+        postButton.addActionListener(this);
+
+
 
 
     }
@@ -109,16 +155,26 @@ public class Homepage extends JFrame implements ActionListener {
         if (e.getSource()==button2)
         {
             this.dispose();
-            posts p = new posts();
+            new posts(username);
         } else if (e.getSource() == button3) {
             this.dispose();
-            new comments();
+            new comments(username);
         } else if (e.getSource() ==button4) {
             this.dispose();
-            new likes();
+            new likes(username);
         } else if (e.getSource() == button5) {
             this.dispose();
             new Login();
+        } else if (e.getSource() == postButton) {
+            if(!postBody.equals("") && !postTitle.equals("")) {
+                System.out.println("in");
+                Main newm = new Main();
+                newm.createpost(postTitle.getText(), postBody.getText(),username);
+                pagelabel.setText("Home");
+            } else {
+                pagelabel.setText("fill out both fields");
+            }
         }
     }
+
 }

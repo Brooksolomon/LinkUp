@@ -140,7 +140,7 @@ public class Signup extends JFrame implements ActionListener {
                 label7.setForeground(Color.green);
                 label7.setText("Account Created");
                 this.dispose();
-                new Homepage();
+                new Homepage(userName);
             }
 
         }
