@@ -35,6 +35,12 @@ public class Main {
         post_managment newp = new post_managment(connection);
         newp.likeunlike(increase,id);
     }
+    ResultSet fetchtopusers()
+    {
+        connect();
+        post_managment newp = new post_managment(connection);
+        return newp.fetchtopusers();
+    }
 
 
 
@@ -115,8 +121,6 @@ class User {
         } catch (SQLException e) {
             System.out.println("user doesnt exist");
             throw new RuntimeException(e);
-
-
         }
         return true ;
     }
@@ -148,7 +152,6 @@ class post_managment
         try {
             PreparedStatement newe = connection.prepareStatement("select * from posts order by id desc ");
             ResultSet answer = newe.executeQuery();
-            String password = null;
             return answer;
         }catch (Exception e)
         {
@@ -182,6 +185,18 @@ class post_managment
                 throw new RuntimeException(e);
             }
         }
+    }
+    ResultSet fetchtopusers()
+    {
+        try {
+            PreparedStatement newe = connection.prepareStatement("select user_name,count(user_name)  as count from posts group by user_name order by count desc OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY");
+            ResultSet answer = newe.executeQuery();
+            return answer;
+        }catch (Exception e)
+        {
+            System.out.println("fuck");
+        }
+        return null;
     }
 }
 

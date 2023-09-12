@@ -26,11 +26,11 @@ public class Homepage extends JFrame implements ActionListener {
         this.username = username;
         this.sidebar(1);
         this.feed();
+        this.topusers();
 
-        panel3 = new JPanel(null);
 
 
-        panel3.setBackground(Color.blue);
+
 
         setSize(1920,1080);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -42,7 +42,8 @@ public class Homepage extends JFrame implements ActionListener {
 
 
         add(panel1,BorderLayout.WEST);
-        add(panel2,BorderLayout.CENTER);
+//        add(panel2,BorderLayout.CENTER);
+        add(new JScrollPane(panel2),BorderLayout.CENTER);
         add(panel3,BorderLayout.EAST);
 
         setVisible(true);
@@ -129,11 +130,14 @@ public class Homepage extends JFrame implements ActionListener {
         pagelabel.setBounds(30,20,100,40);
         pagelabel.setFont(new Font("Arial", Font.PLAIN, 30));
 
+
+
         Border blackline = BorderFactory.createLineBorder(Color.black);
         panel2.setBorder(blackline);
 
         postTitle = new JTextField("Post title",300);
         postTitle.setBounds(30,80,300,50);
+        postTitle.setFont(new Font("Arial", Font.PLAIN, 18));
         panel2.add(postTitle);
 
 
@@ -144,12 +148,14 @@ public class Homepage extends JFrame implements ActionListener {
         postBody.setBorder(blackline);
         panel2.add(postBody);
         postBody.setLineWrap(true);
+        postBody.setFont(new Font("Arial", Font.PLAIN, 16));
 
         postButton = new JButton("Post");
         postButton.setBounds(1130,270,100,50);
         postButton.setBackground(mycolor);
         panel2.add(postButton);
         postButton.addActionListener(this);
+    ;
 
         ResultSet posts = new Main().fetchposts();
         System.out.println(posts);
@@ -164,7 +170,7 @@ public class Homepage extends JFrame implements ActionListener {
                 String username = posts.getString(5);
                 Date postdate = posts.getDate(6);
 
-                JLabel userlabel = new JLabel(username );
+                JLabel userlabel = new JLabel("@"+username);
                 userlabel.setFont(new Font("Arial", Font.PLAIN, 18));
 
                 JLabel datelabel = new JLabel("‧"+postdate.toString());
@@ -179,6 +185,7 @@ public class Homepage extends JFrame implements ActionListener {
                 bodyarea.setEditable(false);
 
                 bodyarea.setLineWrap(true);
+                bodyarea.setFont(new Font("Arial", Font.PLAIN, 15));
 
 
 
@@ -203,6 +210,7 @@ public class Homepage extends JFrame implements ActionListener {
                 y+=200;
                 count+=1;
             }
+
         }catch (Exception e)
         {
             System.out.println(e);
@@ -211,9 +219,43 @@ public class Homepage extends JFrame implements ActionListener {
 
 
 
+        add(new JScrollPane(panel2),BorderLayout.CENTER);
+    }
+    public void topusers()
+    {
+        panel3 = new JPanel(null);
+        JLabel header= new JLabel("Top 5 users");
+        header.setFont(new Font("Arial",Font.PLAIN,30));
+        header.setBounds(80,50,300,30);
+        panel3.setBackground(totalwhite);
+        panel3.add(header);
+
+        Main temp = new Main();
+        ResultSet answer = temp.fetchtopusers();
+        int y = 120;
+        int rank=1;
+        try {
+            while (answer.next()) {
+                String user = answer.getString(1);
+                int count = answer.getInt(2);
+                JLabel userlabel = new JLabel(rank + ",@"+ user);
+                userlabel.setFont(new Font("Arial",Font.PLAIN,18));
+                userlabel.setBounds(100,y,160,20);
+
+                JLabel countlabel = new JLabel(count + " posts");
+                countlabel.setBounds(130,y+20,100,20);
+                userlabel.setForeground(mycolor);
+                panel3.add(userlabel);
+                panel3.add(countlabel);
+                y+=60;
+                rank+=1;
+            }
+        }catch (Exception e)
+        {
+            System.out.println("fetch error");
+        }
 
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==button2)
