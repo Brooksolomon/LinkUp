@@ -23,6 +23,18 @@ public class Main {
         post_managment newp = new post_managment(connection);
         newp.post(title,body,username);
     }
+    ResultSet fetchposts()
+    {
+        connect();
+        post_managment newp = new post_managment(connection);
+        return  newp.getpost();
+    }
+    void likeupdatepost(boolean increase,int id)
+    {
+        connect();
+        post_managment newp = new post_managment(connection);
+        newp.likeunlike(increase,id);
+    }
 
 
 
@@ -129,6 +141,46 @@ class post_managment
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+    ResultSet getpost()
+    {
+        try {
+            PreparedStatement newe = connection.prepareStatement("select * from posts order by id desc ");
+            ResultSet answer = newe.executeQuery();
+            String password = null;
+            return answer;
+        }catch (Exception e)
+        {
+            System.out.println("fuck");
+        }
+
+
+        return null;
+    }
+    void likeunlike(boolean increase,int id)
+    {
+        if (increase)
+        {
+            try{
+                PreparedStatement newe = connection.prepareStatement("update posts set likes+=1 where id = ?");
+                newe.setInt(1, id);
+                System.out.println("added");
+                newe.executeUpdate();
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }else {
+            try{
+                PreparedStatement newe = connection.prepareStatement("update posts set likes-=1 where id = ?");
+                newe.setInt(1, id);
+                System.out.println("added");
+                newe.executeUpdate();
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
