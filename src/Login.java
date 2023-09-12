@@ -83,7 +83,7 @@ public class Login extends JFrame implements ActionListener {
             textfield2.setText("");
         } else if (e.getSource() == button2) {
             Main run = new Main();
-            run.Searchuser(textfield1.getText(),textfield2.getText(),label3);
+            run.Searchuser(textfield1.getText(),textfield2.getText(),label3,this);
         } else if (e.getSource() == button3) {
             Signup sp = new Signup();
             this.dispose();

@@ -10,11 +10,11 @@ public class Main {
         User newuser = new User(connection);
         newuser.insert_info(fName, lName, userName, email, password);
     }
-    boolean Searchuser(String username,String pass, JLabel l3)
+    boolean Searchuser(String username,String pass, JLabel l3,JFrame myframe)
     {
         connect();
         User newuser = new User(connection);
-         return newuser.get_user(username,pass,l3);
+         return newuser.get_user(username,pass,l3,myframe);
     }
 
 
@@ -64,7 +64,7 @@ class User {
         }
 
     }
-    boolean get_user(String username,String pass , JLabel l3)
+    boolean get_user(String username,String pass , JLabel l3,JFrame myframe)
     {
         try
         {
@@ -88,6 +88,9 @@ class User {
             else {
                 l3.setForeground(Color.green);
                 l3.setText("login successful ");
+                myframe.dispose();
+                new Homepage();
+
             }
 
         } catch (SQLException e) {

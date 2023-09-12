@@ -132,13 +132,15 @@ public class Signup extends JFrame implements ActionListener {
                 label7.setText("Passwords don't match");
             } else if (!mat.matches()) {
                 label7.setText("not a valid email address");
-            } else if (new Main().Searchuser(textfield3.getText(),textfield5.getText(),new JLabel())) {
+            } else if (new Main().Searchuser(textfield3.getText(),textfield5.getText(),new JLabel(),this)) {
                 label7.setText("Username Taken");
             } else {
                 Main run = new Main();
                 run.Createuser(fName, lName, userName, email, password);
                 label7.setForeground(Color.green);
                 label7.setText("Account Created");
+                this.dispose();
+                new Homepage();
             }
 
         }
