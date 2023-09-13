@@ -29,11 +29,23 @@ public class Main {
         post_managment newp = new post_managment(connection);
         return  newp.getpost();
     }
-    void likeupdatepost(boolean increase,int id)
+    ResultSet fetchLikedPosts(String username)
+    {
+        connect();
+        post_managment ne = new post_managment(connection);
+        return ne.getLikedPosts(username);
+    }
+    ResultSet fetchMyPosts(String username)
+    {
+        connect();
+        post_managment ne = new post_managment(connection);
+        return ne.fetchMyPosts(username);
+    }
+    void likeupdatepost(boolean increase,int id,String username)
     {
         connect();
         post_managment newp = new post_managment(connection);
-        newp.likeunlike(increase,id);
+        newp.likeunlike(increase,id,username);
     }
     ResultSet fetchtopusers()
     {
@@ -41,6 +53,7 @@ public class Main {
         post_managment newp = new post_managment(connection);
         return newp.fetchtopusers();
     }
+
 
 
 
@@ -161,13 +174,19 @@ class post_managment
 
         return null;
     }
-    void likeunlike(boolean increase,int id)
+    void likeunlike(boolean increase,int id,String username)
     {
         if (increase)
         {
             try{
                 PreparedStatement newe = connection.prepareStatement("update posts set likes+=1 where id = ?");
                 newe.setInt(1, id);
+                System.out.println("added");
+                newe.executeUpdate();
+
+                newe = connection.prepareStatement("insert into liked (user_name,post_id) values(?,?)");
+                newe.setString(1, username);
+                newe.setInt(2,id);
                 System.out.println("added");
                 newe.executeUpdate();
 
@@ -181,6 +200,12 @@ class post_managment
                 System.out.println("added");
                 newe.executeUpdate();
 
+                newe = connection.prepareStatement("Delete from liked where user_name=? and post_id = ?");
+                newe.setString(1, username);
+                newe.setInt(2,id);
+                System.out.println("removed");
+                newe.executeUpdate();
+
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -190,6 +215,32 @@ class post_managment
     {
         try {
             PreparedStatement newe = connection.prepareStatement("select user_name,count(user_name)  as count from posts group by user_name order by count desc OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY");
+            ResultSet answer = newe.executeQuery();
+            return answer;
+        }catch (Exception e)
+        {
+            System.out.println("fuck");
+        }
+        return null;
+    }
+    ResultSet getLikedPosts(String username)
+    {
+        try {
+            PreparedStatement newe = connection.prepareStatement("select posts.id,posts.title,posts.body,posts.likes,posts.user_name,posts.created_At from liked left  join posts on liked.post_id = posts.id where liked.user_name = ? order by id desc");
+            newe.setString(1,username);
+            ResultSet answer = newe.executeQuery();
+            return answer;
+        }catch (Exception e)
+        {
+            System.out.println("fuck");
+        }
+        return null;
+    }
+    ResultSet fetchMyPosts(String username)
+    {
+        try {
+            PreparedStatement newe = connection.prepareStatement("select * from posts where user_name = ? order by id desc");
+            newe.setString(1,username);
             ResultSet answer = newe.executeQuery();
             return answer;
         }catch (Exception e)

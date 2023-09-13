@@ -11,9 +11,12 @@ import java.util.concurrent.TimeUnit;
 public class Homepage extends JFrame implements ActionListener {
     String username;
     JButton likebutton;
-    JButton  likearray[] = new JButton[15];
-    int idarray[] = new int[15];
+    JButton[] likearray = new JButton[15];
+    JButton commnetbutton;
+    JButton [] commentarray = new JButton[15];
+    int[] idarray = new int[15];
     JPanel panel1,panel2,panel3;
+    JPanel writepost;
     JLabel logo,label1,label2,label3,label4;
     JLabel pagelabel;
     JTextField postTitle;
@@ -42,8 +45,8 @@ public class Homepage extends JFrame implements ActionListener {
 
 
         add(panel1,BorderLayout.WEST);
-//        add(panel2,BorderLayout.CENTER);
-        add(new JScrollPane(panel2),BorderLayout.CENTER);
+
+        add(new JScrollPane(panel2, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), BorderLayout.CENTER);
         add(panel3,BorderLayout.EAST);
 
         setVisible(true);
@@ -123,43 +126,52 @@ public class Homepage extends JFrame implements ActionListener {
     }
     public void feed()
     {
-        panel2 = new JPanel(null);
+        panel2 = new JPanel();
+        panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
+        writepost = new JPanel(null);
         panel2.setBackground(totalwhite);
+        writepost.setBackground(totalwhite);
         pagelabel = new JLabel("Home");
+        panel2.add(Box.createRigidArea(new Dimension(0,50)));
         panel2.add(pagelabel);
-        pagelabel.setBounds(30,20,100,40);
         pagelabel.setFont(new Font("Arial", Font.PLAIN, 30));
+        panel2.add(writepost);
+        panel2.setMinimumSize(new Dimension(1000,100));
+        panel2.setMaximumSize(new Dimension(1000,1000));
+        writepost.setMinimumSize(new Dimension(1250,300));
+        writepost.setPreferredSize(new Dimension(1250,300));
+        writepost.setMaximumSize((new Dimension(1250,300)));
 
 
 
-        Border blackline = BorderFactory.createLineBorder(Color.black);
-        panel2.setBorder(blackline);
 
+//
         postTitle = new JTextField("Post title",300);
-        postTitle.setBounds(30,80,300,50);
+        postTitle.setBounds(30,10,300,50);
         postTitle.setFont(new Font("Arial", Font.PLAIN, 18));
-        panel2.add(postTitle);
-
-
-
+        writepost.add(postTitle);
+//
+//
+//
         postBody = new JTextArea(10,500);
         postBody.setText("Post body here");
-        postBody.setBounds(30,150,1200,100);
+        postBody.setBounds(30,80,1200,100);
+        Border blackline = BorderFactory.createLineBorder(Color.black);
         postBody.setBorder(blackline);
-        panel2.add(postBody);
+        writepost.add(postBody);
+//
         postBody.setLineWrap(true);
         postBody.setFont(new Font("Arial", Font.PLAIN, 16));
-
+//
         postButton = new JButton("Post");
-        postButton.setBounds(1130,270,100,50);
+        postButton.setBounds(1130,190,100,50);
         postButton.setBackground(mycolor);
-        panel2.add(postButton);
+        writepost.add(postButton);
         postButton.addActionListener(this);
-    ;
+
 
         ResultSet posts = new Main().fetchposts();
-        System.out.println(posts);
-        int y = 350;
+        int y = 0;
         int count = 0;
         try {
             while (posts.next()) {
@@ -190,24 +202,42 @@ public class Homepage extends JFrame implements ActionListener {
 
 
                 likebutton= new JButton(Integer.toString(likes));
+                commnetbutton = new JButton("");
 
-                userlabel.setBounds(50,y,100,20);
-                datelabel.setBounds(150,y,100,20);
-                titlelabel.setBounds(50,(y+40),500,20);
-                bodyarea.setBounds(50,y+80,1100,50);
-                likebutton.setBounds(200,y+140,100,35);
+                JPanel postpanel = new JPanel(null);
+                userlabel.setBounds(50,0,100,20);
+                datelabel.setBounds(150,0,100,20);
+                titlelabel.setBounds(50,40,500,20);
+                bodyarea.setBounds(50,80,1100,50);
+                likebutton.setBounds(200,140,100,35);
+                commnetbutton.setBounds(600,140,100,35);
+
                 JLabel likelogo = new JLabel(new ImageIcon(getClass().getResource("heart.png")));
+                JLabel commentlogo = new JLabel(new ImageIcon(getClass().getResource("comment.png")));
+
                 likebutton.setBackground(totalwhite);
                 likebutton.add(likelogo);
-                panel2.add(userlabel);
-                panel2.add(datelabel);
-                panel2.add(titlelabel);
-                panel2.add(bodyarea);
-                panel2.add(likebutton);
+
+                commnetbutton.setBackground(totalwhite);
+                commnetbutton.add(commentlogo);
+
+                postpanel.add(userlabel);
+                postpanel.add(datelabel);
+                postpanel.add(titlelabel);
+                postpanel.add(bodyarea);
+                postpanel.add(likebutton);
+                postpanel.add(commnetbutton);
+                postpanel.setBounds(400,y,2500,600);
+                postpanel.setMinimumSize(new Dimension(1250,200));
+                postpanel.setPreferredSize(new Dimension(1250,200));
+                postpanel.setMaximumSize(new Dimension(1250,200));
+                postpanel.setBackground(totalwhite);
+
+                panel2.add(postpanel);
                 likebutton.addActionListener(this);
                 likearray[count] = likebutton;
                 idarray[count] = id;
-                y+=200;
+                y+=2000;
                 count+=1;
             }
 
@@ -217,9 +247,6 @@ public class Homepage extends JFrame implements ActionListener {
             System.out.println("noooo");
         }
 
-
-
-        add(new JScrollPane(panel2),BorderLayout.CENTER);
     }
     public void topusers()
     {
@@ -276,6 +303,8 @@ public class Homepage extends JFrame implements ActionListener {
                 System.out.println("in");
                 Main newm = new Main();
                 newm.createpost(postTitle.getText(), postBody.getText(),username);
+                this.dispose();
+                new Homepage(username);
                 pagelabel.setText("Home");
             } else {
                 pagelabel.setText("fill out both fields");
@@ -288,12 +317,12 @@ public class Homepage extends JFrame implements ActionListener {
                 if(likearray[i].getBackground() == totalwhite){
                     likearray[i].setBackground(mycolor);
                     Main ne = new Main();
-                    ne.likeupdatepost(true,idarray[i]);
+                    ne.likeupdatepost(true,idarray[i],username);
                     likearray[i].setText(Integer.toString(Integer.valueOf(likearray[i].getText()) + 1));
                 }else {
                     likearray[i].setBackground(totalwhite);
                     Main ne = new Main();
-                    ne.likeupdatepost(false,idarray[i]);
+                    ne.likeupdatepost(false,idarray[i],username);
                     likearray[i].setText(Integer.toString(Integer.valueOf(likearray[i].getText()) - 1));
                 }
 
