@@ -11,6 +11,9 @@ public class posts extends JFrame implements ActionListener {
     JLabel pagelabel;
     JButton[] likearray = new JButton[15];
     int[] idarray = new int[15];
+    JButton commentbutton;
+    JButton [] commentarray = new JButton[15];
+
     JPanel panel1,panel2,panel3;
 
     JLabel logo,label1,label2,label3,label4;
@@ -203,6 +206,15 @@ public class posts extends JFrame implements ActionListener {
                 likebutton.setBackground(totalwhite);
                 likebutton.add(likelogo);
 
+                commentbutton = new JButton("");
+                commentbutton.setBounds(600,140,100,35);
+                JLabel commentlogo = new JLabel(new ImageIcon(getClass().getResource("comment.png")));
+                commentbutton.setBackground(totalwhite);
+                commentbutton.add(commentlogo);
+                postpanel.add(commentbutton);
+                commentbutton.addActionListener(this);
+                commentarray [count] = commentbutton;
+
                 postpanel.add(userlabel);
                 postpanel.add(datelabel);
                 postpanel.add(titlelabel);
@@ -260,6 +272,15 @@ public class posts extends JFrame implements ActionListener {
                     likearray[i].setText(Integer.toString(Integer.valueOf(likearray[i].getText()) - 1));
                 }
 
+
+            }
+        }
+        for(int i = 0 ; i < commentarray.length;i++)
+        {
+            if(commentarray[i] == e.getSource())
+            {
+                this.dispose();
+                new Write_comment(username,idarray[i]);
             }
         }
     }

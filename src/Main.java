@@ -53,6 +53,34 @@ public class Main {
         post_managment newp = new post_managment(connection);
         return newp.fetchtopusers();
     }
+    ResultSet fetchCurrentPost(int id)
+    {
+        connect();
+        post_managment newp = new post_managment(connection);
+        return newp.fetchCurrentPost(id);
+    }
+    void createcomment(String body , String username, int postid)
+    {
+        connect();
+        new post_managment(connection).createcomment(body,username,postid);
+    }
+    ResultSet fetchCurrentComments(int postid)
+    {
+        connect();
+        return new post_managment(connection).fetchCurrentComments(postid);
+    }
+    ResultSet fetchMyComments(String username)
+    {
+        connect();
+        return new post_managment(connection).fetchMyComments(username);
+    }
+    boolean checkifliked(String username,int postid)
+    {
+        connect();
+        return new post_managment(connection).checkifliked(username,postid);
+    }
+
+
 
 
 
@@ -168,7 +196,7 @@ class post_managment
             return answer;
         }catch (Exception e)
         {
-            System.out.println("fuck");
+            System.out.println(e);
         }
 
 
@@ -219,20 +247,20 @@ class post_managment
             return answer;
         }catch (Exception e)
         {
-            System.out.println("fuck");
+            System.out.println(e);
         }
         return null;
     }
     ResultSet getLikedPosts(String username)
     {
         try {
-            PreparedStatement newe = connection.prepareStatement("select posts.id,posts.title,posts.body,posts.likes,posts.user_name,posts.created_At from liked left  join posts on liked.post_id = posts.id where liked.user_name = ? order by id desc");
+            PreparedStatement newe = connection.prepareStatement("select Distinct posts.id,posts.title,posts.body,posts.likes,posts.user_name,posts.created_At from liked left  join posts on liked.post_id = posts.id where liked.user_name = ? order by id desc");
             newe.setString(1,username);
             ResultSet answer = newe.executeQuery();
             return answer;
         }catch (Exception e)
         {
-            System.out.println("fuck");
+            System.out.println(e);
         }
         return null;
     }
@@ -245,10 +273,98 @@ class post_managment
             return answer;
         }catch (Exception e)
         {
-            System.out.println("fuck");
+            System.out.println(e);
         }
         return null;
     }
+    ResultSet fetchCurrentPost(int Postid)
+    {
+        try {
+            PreparedStatement newe = connection.prepareStatement("select * from posts where id = ?");
+            newe.setInt(1,Postid);
+            ResultSet answer = newe.executeQuery();
+            return answer;
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        return null;
+    }
+    void createcomment(String body,String username,int postID)
+    {
+        try {
+            PreparedStatement newe = connection.prepareStatement("insert into comments(body,username,post_id) values (?,?,?)");
+            newe.setString(1,body);
+            newe.setString(2,username);
+            newe.setInt(3,postID);
+            ResultSet answer = newe.executeQuery();
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+    ResultSet fetchCurrentComments(int Postid)
+    {
+        try {
+            PreparedStatement newe = connection.prepareStatement("select * from comments where post_id = ?");
+            newe.setInt(1,Postid);
+            ResultSet answer = newe.executeQuery();
+            return  answer;
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        return null;
+    }
+    ResultSet fetchMyComments(String username)
+    {
+        try {
+            PreparedStatement newe = connection.prepareStatement("select * from comments where username=?");
+            newe.setString(1,username);
+            ResultSet answer = newe.executeQuery();
+            return  answer;
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        return null;
+    }
+    boolean checkifliked(String username , int Postid) {
+        ResultSet answer=null;
+        try {
+            PreparedStatement newe = connection.prepareStatement("select * from liked where user_name=? and post_id = ?");
+            newe.setString(1,username);
+            newe.setInt(2,Postid);
+            answer = newe.executeQuery();
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        int count = 0 ;
+        try{
+
+            while(answer.next()) {
+                count++;
+            }
+
+        }catch (Exception e)
+        {
+            System.out.println(username + " " + Postid);
+            return false;
+        }
+        if (count > 0 ){
+            return true;
+        }
+        else {
+            System.out.println(username + " " + Postid);
+            return false;
+        }
+
+
+    }
+
+
+
 }
 
 

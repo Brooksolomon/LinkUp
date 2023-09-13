@@ -14,6 +14,8 @@ public class likes extends JFrame implements ActionListener {
     JLabel pagelabel;
     JButton[] likearray = new JButton[15];
     int[] idarray = new int[15];
+    JButton commentbutton;
+    JButton [] commentarray = new JButton[15];
     JButton button1,button2,button3,button4,button5;
     Color mycolor = new Color(15,186,129);
     Color totalwhite  = new Color(255,255,255);
@@ -200,6 +202,16 @@ public class likes extends JFrame implements ActionListener {
                 likebutton.setBackground(totalwhite);
                 likebutton.add(likelogo);
 
+                commentbutton = new JButton("");
+                commentbutton.setBounds(600,140,100,35);
+                JLabel commentlogo = new JLabel(new ImageIcon(getClass().getResource("comment.png")));
+                commentbutton.setBackground(totalwhite);
+                commentbutton.add(commentlogo);
+                postpanel.add(commentbutton);
+                commentbutton.addActionListener(this);
+                commentarray [count] = commentbutton;
+
+
                 postpanel.add(userlabel);
                 postpanel.add(datelabel);
                 postpanel.add(titlelabel);
@@ -218,6 +230,10 @@ public class likes extends JFrame implements ActionListener {
                 idarray[count] = id;
                 y += 2000;
                 count += 1;
+                if (new Main().checkifliked(this.username,id))
+                {
+                    likebutton.setBackground(mycolor);
+                }
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -257,6 +273,14 @@ public class likes extends JFrame implements ActionListener {
                     likearray[i].setText(Integer.toString(Integer.valueOf(likearray[i].getText()) - 1));
                 }
 
+            }
+        }
+        for(int i = 0 ; i < commentarray.length;i++)
+        {
+            if(commentarray[i] == e.getSource())
+            {
+                this.dispose();
+                new Write_comment(username,idarray[i]);
             }
         }
     }

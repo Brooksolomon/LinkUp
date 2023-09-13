@@ -12,7 +12,7 @@ public class Homepage extends JFrame implements ActionListener {
     String username;
     JButton likebutton;
     JButton[] likearray = new JButton[15];
-    JButton commnetbutton;
+    JButton commentbutton;
     JButton [] commentarray = new JButton[15];
     int[] idarray = new int[15];
     JPanel panel1,panel2,panel3;
@@ -65,6 +65,7 @@ public class Homepage extends JFrame implements ActionListener {
         label4 = new JLabel(new ImageIcon(getClass().getResource("like.png")));
 
         button1 = new JButton("Home");
+
         button2 = new JButton("posts");
         button3 = new JButton("comments");
         button4 = new JButton("Likes");
@@ -202,7 +203,7 @@ public class Homepage extends JFrame implements ActionListener {
 
 
                 likebutton= new JButton(Integer.toString(likes));
-                commnetbutton = new JButton("");
+                commentbutton = new JButton("");
 
                 JPanel postpanel = new JPanel(null);
                 userlabel.setBounds(50,0,100,20);
@@ -210,7 +211,7 @@ public class Homepage extends JFrame implements ActionListener {
                 titlelabel.setBounds(50,40,500,20);
                 bodyarea.setBounds(50,80,1100,50);
                 likebutton.setBounds(200,140,100,35);
-                commnetbutton.setBounds(600,140,100,35);
+                commentbutton.setBounds(600,140,100,35);
 
                 JLabel likelogo = new JLabel(new ImageIcon(getClass().getResource("heart.png")));
                 JLabel commentlogo = new JLabel(new ImageIcon(getClass().getResource("comment.png")));
@@ -218,15 +219,15 @@ public class Homepage extends JFrame implements ActionListener {
                 likebutton.setBackground(totalwhite);
                 likebutton.add(likelogo);
 
-                commnetbutton.setBackground(totalwhite);
-                commnetbutton.add(commentlogo);
+                commentbutton.setBackground(totalwhite);
+                commentbutton.add(commentlogo);
 
                 postpanel.add(userlabel);
                 postpanel.add(datelabel);
                 postpanel.add(titlelabel);
                 postpanel.add(bodyarea);
                 postpanel.add(likebutton);
-                postpanel.add(commnetbutton);
+                postpanel.add(commentbutton);
                 postpanel.setBounds(400,y,2500,600);
                 postpanel.setMinimumSize(new Dimension(1250,200));
                 postpanel.setPreferredSize(new Dimension(1250,200));
@@ -235,10 +236,16 @@ public class Homepage extends JFrame implements ActionListener {
 
                 panel2.add(postpanel);
                 likebutton.addActionListener(this);
+                commentbutton.addActionListener(this);
                 likearray[count] = likebutton;
                 idarray[count] = id;
+                commentarray [count] = commentbutton;
                 y+=2000;
                 count+=1;
+                if (new Main().checkifliked(this.username,id))
+                {
+                    likebutton.setBackground(mycolor);
+                }
             }
 
         }catch (Exception e)
@@ -325,7 +332,14 @@ public class Homepage extends JFrame implements ActionListener {
                     ne.likeupdatepost(false,idarray[i],username);
                     likearray[i].setText(Integer.toString(Integer.valueOf(likearray[i].getText()) - 1));
                 }
-
+            }
+        }
+        for(int i = 0 ; i < commentarray.length;i++)
+        {
+            if(commentarray[i] == e.getSource())
+            {
+                this.dispose();
+                new Write_comment(username,idarray[i]);
             }
         }
     }
