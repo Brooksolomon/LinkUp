@@ -150,8 +150,9 @@ public class Signup extends JFrame implements ActionListener {
         }
         else if (e.getSource() == button3)
         {
-            Login lg =  new Login();
             this.dispose();
+            Login lg =  new Login();
+
         }
     }
 

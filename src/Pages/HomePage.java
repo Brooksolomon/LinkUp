@@ -33,16 +33,6 @@ public class HomePage extends JFrame implements ActionListener {
     Color mycolor = new Color(15,186,129);
     Color totalwhite  = new Color(255,255,255);
     public HomePage(String username){
-        JFrame x = new JFrame();
-        JLabel ran = new JLabel("Loading...");
-        ran.setFont(new Font("Arial",Font.PLAIN,20));
-        ran.setBounds(140,130,100,100);
-        JPanel newp = new JPanel(null);
-        newp.add(ran);
-        x.add(newp);
-
-        x.setVisible(true);
-        x.setSize(400,400);
 
         this.username = username;
         panel1 = new LeftBar().sidebar(1,this,username);
@@ -67,7 +57,6 @@ public class HomePage extends JFrame implements ActionListener {
         add(new JScrollPane(panel2, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), BorderLayout.CENTER);
         add(panel3,BorderLayout.EAST);
 
-        x.dispose();
         setVisible(true);
     }
     public static void main(String [] args)
