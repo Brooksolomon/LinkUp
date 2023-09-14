@@ -12,6 +12,7 @@ public class Homepage extends JFrame implements ActionListener {
     String username;
     JButton likebutton;
     JButton[] likearray = new JButton[15];
+    JButton [] userarray =  new JButton[15];
     JButton commentbutton;
     JButton [] commentarray = new JButton[15];
     int[] idarray = new int[15];
@@ -115,8 +116,13 @@ public class Homepage extends JFrame implements ActionListener {
                 String username = posts.getString(5);
                 Date postdate = posts.getDate(6);
 
-                JLabel userlabel = new JLabel("@"+username);
-                userlabel.setFont(new Font("Arial", Font.PLAIN, 18));
+                JButton userlabel = new JButton("@"+username);
+                userarray[count] = userlabel;
+                userlabel.setFont(new Font("Arial", Font.PLAIN, 16));
+                userlabel.setForeground(mycolor);
+                userlabel.setBackground(totalwhite);
+                userlabel.setBorder(null);
+                userlabel.addActionListener(this);
 
                 JLabel datelabel = new JLabel("‧"+postdate.toString());
                 datelabel.setForeground(Color.gray);
