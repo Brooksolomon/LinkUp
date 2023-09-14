@@ -1,4 +1,9 @@
 # LinkUp - A reddit / twitter mashup made with java swing and sql
+##Features
+  Create a profile ,edit profile and login authentication 
+  Connect with friends and follow other users
+  Share posts 
+  Like and comment on other users' posts
 ![Screenshot (446)](https://github.com/Brooksolomon/LinkUp/assets/86517756/f95cb33f-6f01-412a-8449-ead2ebe3295d)
 ![Screenshot (448)](https://github.com/Brooksolomon/LinkUp/assets/86517756/a3f08066-acb3-4ca6-ac22-3576d4677a02)
 ![Screenshot (450)](https://github.com/Brooksolomon/LinkUp/assets/86517756/e121738a-af75-4094-a92f-96183a4d6961)
