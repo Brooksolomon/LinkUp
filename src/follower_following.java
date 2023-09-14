@@ -1,17 +1,24 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 
-public class follower_following {
+public class follower_following implements ActionListener {
     Color mycolor = new Color(15, 186, 129);
     Color totalwhite = new Color(255, 255, 255);
+    JButton [] userarray = new JButton[15];
+    String username ;
+    JFrame frame;
     follower_following()
     {
 
 
     }
-    JPanel  createpanel(String username)
+    JPanel  createpanel(String username,JFrame f)
     {
+        this.username = username ;
+        this.frame = f;
         JPanel lister = new JPanel(null);
 
         JLabel label1, label2;
@@ -29,7 +36,7 @@ public class follower_following {
         ResultSet following  = new Main().followinglist(username);
 
         int count = 0;
-        int y = 100;
+        int y = 50;
         try {
 
             while (follower.next()) {
@@ -40,11 +47,12 @@ public class follower_following {
                 userlabel.setBackground(totalwhite);
                 userlabel.setBounds(300,y,100,40);
 
-
+                userarray[count] = userlabel;
+                userlabel.addActionListener(this);
 
                 lister.add(userlabel);
 
-                y+=100;
+                y+=50;
             }
         }catch (Exception e)
         {
@@ -54,4 +62,14 @@ public class follower_following {
         return  lister;
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        for(int  i = 0  ; i < userarray.length;i++) {
+            if (e.getSource() == userarray[i])
+            {
+                frame.dispose();
+                new other_profile(username,userarray[i].getText());
+            }
+        }
+    }
 }

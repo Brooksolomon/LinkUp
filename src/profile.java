@@ -134,7 +134,7 @@ public class profile extends JFrame implements ActionListener {
             System.out.println("new error");
         }
 
-        JPanel followlist = new follower_following().createpanel(userName);
+        JPanel followlist = new follower_following().createpanel(userName,this);
         panel2.add(followlist);
 
     }
