@@ -2,7 +2,7 @@
 
 ##Features
 
-Create a profile ,edit profile and login authentication \n
+Create a profile ,edit profile and login authentication <br>
 Connect with friends and follow other users
 Share posts 
 Like and comment on other users' posts
