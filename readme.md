@@ -6,7 +6,7 @@ Create a profile ,edit profile and login authentication <br>
 Connect with friends and follow other users <br>
 Share posts <br>
 Like and comment on other users' posts <br>
-<br><br><br>
+<br><br>
 
 
 
