@@ -3,21 +3,25 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-import java.util.Date;
+import java.sql.SQLOutput;
 
-public class profile extends JFrame implements ActionListener {
+public class other_profile extends JFrame implements ActionListener {
+
+
     String username;
+    String profileuser;
     JPanel panel1, panel2, panel3;
-    JButton cancelbutton, editbutton;
+    JButton  followbutton;
     JLabel pagelabel;
     Color mycolor = new Color(15, 186, 129);
     Color totalwhite = new Color(255, 255, 255);
     String firstName,lastName,userName ,email,password ;
     JTextField fnField,lnField,userField,EmailField;
-    JPasswordField PassField;
-    profile(String username) {
+
+    other_profile(String username,String profileuser) {
         this.username = username;
-        panel1 = new letbar().sidebar(5, this, username);
+        this.profileuser = profileuser;
+        panel1 = new letbar().sidebar(0, this, username);
         this.feed();
         panel3 = new rightbar().topusers();
 
@@ -40,29 +44,29 @@ public class profile extends JFrame implements ActionListener {
         panel2 = new JPanel();
         panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
         panel2.setBackground(totalwhite);
-        pagelabel = new JLabel("My profile");
+        pagelabel = new JLabel("user profile");
         panel2.add(Box.createRigidArea(new Dimension(5, 30)));
         panel2.add(pagelabel);
         pagelabel.setFont(new Font("Arial", Font.PLAIN, 30));
 
 
-        JLabel label1, label2, label3, label4, label5, label6;
+        JLabel label1, label2, label3, label4, label6;
         label1 = new JLabel("First name");
         label2 = new JLabel("Last name ");
         label3 = new JLabel("Username");
         label4 = new JLabel("Email");
-        label5 = new JLabel("Password");
 
         Font myfont  = new Font("Arial", Font.PLAIN, 20);
-        ResultSet data = new Main().userprofile(username);
-
+        System.out.println(profileuser);
+        ResultSet data = new Main().userprofile(profileuser);
+        System.out.println("your data:" + data);
         label1.setFont(myfont);
         label2.setFont(myfont);
         label3.setFont(myfont);
         label4.setFont(myfont);
-        label5.setFont(myfont);
         try {
             while (data.next()) {
+
                 int id = data.getInt(1);
                 firstName = data.getString(2);
                 lastName = data.getString(3);
@@ -70,60 +74,59 @@ public class profile extends JFrame implements ActionListener {
                 email = data.getString(5);
                 password = data.getString(6);
 
+
+                System.out.println("firstname" + firstName);
                 JPanel profilePanel = new JPanel(null);
 
                 fnField = new JTextField(firstName);
                 lnField = new JTextField(lastName);
                 userField = new JTextField(userName);
                 EmailField = new JTextField(email);
-                PassField = new JPasswordField(password);
 
 
-                label1.setBounds(40,60,200,40);
-                label2.setBounds(700,60,200,40);
-                label3.setBounds(40,160,200,40);
-                label4.setBounds(700,160,200,40);
-                label5.setBounds(40,260,200,40);
+                label1.setBounds(40,160,200,40);
+                label2.setBounds(700,160,200,40);
+                label3.setBounds(40,260,200,40);
+                label4.setBounds(700,260,200,40);
 
-                fnField.setBounds(140,60,200,40);
-                lnField.setBounds(800,60,200,40);
-                userField.setBounds(140,160,200,40);
-                EmailField.setBounds(800,160,200,40);
-                PassField.setBounds(140,260,200,40);
+                fnField.setBounds(140,160,200,40);
+                lnField.setBounds(800,160,200,40);
+                userField.setBounds(140,260,200,40);
+                EmailField.setBounds(800,260,200,40);
 
                 fnField.setEditable(false);
                 lnField.setEditable(false);
                 userField.setEditable(false);
                 EmailField.setEditable(false);
-                PassField.setEditable(false);
 
-                cancelbutton = new JButton("cancel");
-                cancelbutton.setBackground(totalwhite);
-                cancelbutton.setBounds(780,360,100,40);
 
-                editbutton = new JButton("Edit profile");
-                editbutton.setBackground(mycolor);
-                editbutton.setForeground(totalwhite);
-                editbutton.setBounds(900,360,100,40);
 
-                cancelbutton.addActionListener(this);
-                editbutton.addActionListener(this);
+                followbutton = new JButton("Follow");
+                followbutton.setBackground(mycolor);
+                followbutton.setForeground(totalwhite);
+                followbutton.setBounds(900,60,100,40);
+
+                followbutton.addActionListener(this);
+                if (new Main().checkiffollows(username,profileuser))
+                {
+                    System.out.println("DO i follow :" + new Main().checkiffollows(username,profileuser));
+                    followbutton.setBackground(new Color(254,59,41));
+                    followbutton.setText("unfollow");
+                }
 
                 System.out.println("oiggy");
                 profilePanel.add(label1);
                 profilePanel.add(label2);
                 profilePanel.add(label3);
                 profilePanel.add(label4);
-                profilePanel.add(label5);
-                profilePanel.add(cancelbutton);
-                profilePanel.add(editbutton);
+
+                profilePanel.add(followbutton);
 
 
                 profilePanel.add(fnField);
                 profilePanel.add(lnField);
                 profilePanel.add(userField);
                 profilePanel.add(EmailField);
-                profilePanel.add(PassField);
 
                 profilePanel.setBackground(totalwhite);
                 panel2.add(profilePanel);
@@ -131,33 +134,38 @@ public class profile extends JFrame implements ActionListener {
 
             }
         } catch (Exception e) {
-            System.out.println("new error");
+            System.out.println("new error1");
         }
-
-        JPanel followlist = new follower_following().createpanel(userName);
-        panel2.add(followlist);
 
     }
 
-    @Override
+
+
+
+
+
+
+
+
+
+
+
+
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == cancelbutton)
+        if (e.getSource() == followbutton)
         {
-            this.dispose();
-            new profile(username);
-        } else if (e.getSource() == editbutton) {
-            if (editbutton.getText().equals("Edit profile"))
+            if(followbutton.getBackground() == mycolor)
             {
-                fnField.setEditable(true);
-                lnField.setEditable(true);
-                EmailField.setEditable(true);
-                PassField.setEditable(true);
-                editbutton.setText("Save");
-            }else {
-                this.dispose();
-                new Main().Editrow(username,fnField.getText(),lnField.getText(),userField.getText(),EmailField.getText(),PassField.getText());
-                new profile(username);
+                followbutton.setBackground(new Color(254,59,41));
+                followbutton.setText("unfollow");
+                new Main().createfollow(username,profileuser,true);
             }
+            else{
+                followbutton.setBackground(mycolor);
+                followbutton.setText("follow");
+                new Main().createfollow(username,profileuser,false);
+            }
+
         }
     }
 }

@@ -232,6 +232,22 @@ public class Homepage extends JFrame implements ActionListener {
                 new Write_comment(username,idarray[i]);
             }
         }
+        for (int i  = 0; i < userarray.length;i++)
+        {
+            if (userarray[i] == e.getSource())
+            {
+                String profileuser = userarray[i].getText();
+                profileuser = profileuser.substring(1,profileuser.length());
+                if(!username.equals(profileuser)) {
+                    this.dispose();
+                    new other_profile(username, profileuser);
+                }else{
+                    this.dispose();
+                    new profile(username);
+
+                }
+            }
+        }
     }
 
 }

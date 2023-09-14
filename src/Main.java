@@ -89,6 +89,28 @@ public class Main {
         connect();
         new User(connection).Editrow(username,fName,lName,userName,email,password);
     }
+    void createfollow(String user,String profileuser,Boolean f)
+    {
+        connect();
+        new User(connection).createfollow(user,profileuser,f);
+    }
+    boolean checkiffollows(String user,String profileuser)
+    {
+        connect();
+        return new User(connection).checkiffollows(user,profileuser);
+    }
+    ResultSet followerlist(String username)
+    {
+        connect();
+        return new User(connection).followerlist(username);
+    }
+    ResultSet followinglist(String username)
+    {
+        connect();
+        return new User(connection).followinglist(username);
+    }
+
+
 
 
 
@@ -206,6 +228,100 @@ class User {
         {
             System.out.println(e);
         }
+    }
+    void createfollow(String user,String profileuser,Boolean f)
+    {
+        if (f) {
+            try {
+                PreparedStatement newe = connection.prepareStatement("insert into follows values(?,?)");
+                newe.setString(1, user);
+                newe.setString(2, profileuser);
+
+                System.out.println("added");
+                newe.executeUpdate();
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }else{
+            try {
+                PreparedStatement newe = connection.prepareStatement("delete from follows where  follower = ?  and followed = ?");
+                newe.setString(1, user);
+                newe.setString(2, profileuser);
+
+                System.out.println("added");
+                newe.executeUpdate();
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    boolean checkiffollows(String user,String profileuser)
+    {
+        ResultSet answer = null;
+        try{
+            PreparedStatement newe = connection.prepareStatement("select * from follows where follower= ?  and followed = ?");
+            newe.setString(1, user);
+            newe.setString(2, profileuser);
+
+            System.out.println("added");
+            answer = newe.executeQuery();
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        int count = 0 ;
+        try{
+
+            while(answer.next()) {
+                count++;
+            }
+
+        }catch (Exception e)
+        {
+            return false;
+        }
+        if (count > 0 ){
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+    ResultSet followerlist(String username){
+
+        ResultSet answer = null;
+        try{
+            PreparedStatement newe = connection.prepareStatement("select * from follows where followed = ?");
+            newe.setString(1, username);
+
+            System.out.println("added");
+            answer = newe.executeQuery();
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return answer;
+    }
+    ResultSet followinglist(String username){
+
+        ResultSet answer = null;
+        try{
+            PreparedStatement newe = connection.prepareStatement("select * from follows where follower = ? ");
+            newe.setString(1, username);
+
+            System.out.println("added");
+            answer = newe.executeQuery();
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return answer;
     }
 }
 class post_managment
