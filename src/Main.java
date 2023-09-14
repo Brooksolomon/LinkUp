@@ -79,6 +79,17 @@ public class Main {
         connect();
         return new post_managment(connection).checkifliked(username,postid);
     }
+    ResultSet userprofile(String username)
+    {
+        connect();
+        return new User(connection).userprofile(username);
+    }
+    void Editrow(String username,String fName, String lName, String userName, String email, String password )
+    {
+        connect();
+        new User(connection).Editrow(username,fName,lName,userName,email,password);
+    }
+
 
 
 
@@ -164,6 +175,37 @@ class User {
             throw new RuntimeException(e);
         }
         return true ;
+    }
+     ResultSet userprofile(String username)
+    {
+        ResultSet answer = null;
+        try {
+            PreparedStatement newe = connection.prepareStatement("select * from userdata where username=? ");
+            newe.setString(1,username);
+            answer = newe.executeQuery();
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        return answer;
+    }
+    void Editrow(String username,String fName, String lName, String userName, String email, String password)
+    {
+        ResultSet answer = null;
+        try {
+            System.out.println(fName);
+            PreparedStatement newe = connection.prepareStatement("update userdata set First_Name = ? , Last_Name = ? , username = ? , email = ?,password = ? where username = ?");
+            newe.setString(1, fName);
+            newe.setString(2, lName);
+            newe.setString(3, userName);
+            newe.setString(4, email);
+            newe.setString(5, password);
+            newe.setString(6, username);
+            newe.executeUpdate();
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
     }
 }
 class post_managment
