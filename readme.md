@@ -1,6 +1,6 @@
 # LinkUp - A reddit / twitter mashup made with java swing and sql
 ##Features
-  Create a profile ,edit profile and login authentication 
+  Create a profile ,edit profile and login authentication \n
   Connect with friends and follow other users
   Share posts 
   Like and comment on other users' posts
