@@ -1,8 +1,10 @@
+package Components;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.ResultSet;
-
-public class rightbar {
+import Database.Database;
+public class RightBar {
     Color mycolor = new Color(15, 186, 129);
     Color totalwhite = new Color(255, 255, 255);
 
@@ -14,8 +16,7 @@ public class rightbar {
         panel3.setBackground(totalwhite);
         panel3.add(header);
 
-        Main temp = new Main();
-        ResultSet answer = temp.fetchtopusers();
+        ResultSet answer = new Database().fetchtopusers();
         int y = 120;
         int rank = 1;
         try {

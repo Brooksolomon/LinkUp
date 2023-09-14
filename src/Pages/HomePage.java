@@ -1,14 +1,20 @@
+package Pages;
+
+import Components.LeftBar;
+import Components.RightBar;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
 import java.sql.ResultSet;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
-public class Homepage extends JFrame implements ActionListener {
+import Database.Database;
+import java.net.URL;
+public class HomePage extends JFrame implements ActionListener {
     String username;
     JButton likebutton;
     JButton[] likearray = new JButton[15];
@@ -26,11 +32,22 @@ public class Homepage extends JFrame implements ActionListener {
 
     Color mycolor = new Color(15,186,129);
     Color totalwhite  = new Color(255,255,255);
-    Homepage(String username){
+    public HomePage(String username){
+        JFrame x = new JFrame();
+        JLabel ran = new JLabel("Loading...");
+        ran.setFont(new Font("Arial",Font.PLAIN,20));
+        ran.setBounds(140,130,100,100);
+        JPanel newp = new JPanel(null);
+        newp.add(ran);
+        x.add(newp);
+
+        x.setVisible(true);
+        x.setSize(400,400);
+
         this.username = username;
-        panel1 = new letbar().sidebar(1,this,username);
+        panel1 = new LeftBar().sidebar(1,this,username);
         this.feed();
-        panel3  = new rightbar().topusers();
+        panel3  = new RightBar().topusers();
 
 
 
@@ -50,11 +67,12 @@ public class Homepage extends JFrame implements ActionListener {
         add(new JScrollPane(panel2, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), BorderLayout.CENTER);
         add(panel3,BorderLayout.EAST);
 
+        x.dispose();
         setVisible(true);
     }
     public static void main(String [] args)
     {
-        new Homepage("brooksolo");
+        new HomePage("kenenisa");
     }
 
     public void feed()
@@ -104,7 +122,7 @@ public class Homepage extends JFrame implements ActionListener {
 
 
         Font myfont  = new Font("Arial", Font.PLAIN, 25);
-        ResultSet posts = new Main().fetchposts();
+        ResultSet posts = new Database().fetchposts();
         int y = 0;
         int count = 0;
         try {
@@ -115,6 +133,18 @@ public class Homepage extends JFrame implements ActionListener {
                 int likes= posts.getInt(4);
                 String username = posts.getString(5);
                 Date postdate = posts.getDate(6);
+                String url  = posts.getString(13);
+
+                String firstname = posts.getString(8);
+                String lastname = posts.getString(9);
+
+                JLabel first = new JLabel(firstname);
+                JLabel last = new JLabel(lastname);
+
+                System.out.println("ur;" +  url);
+                JLabel profilepic  = getScaledImage(url,25,25);
+                profilepic.setBounds(50,0,50,50);
+
 
                 JButton userlabel = new JButton("@"+username);
                 userarray[count] = userlabel;
@@ -144,15 +174,17 @@ public class Homepage extends JFrame implements ActionListener {
                 commentbutton = new JButton("");
 
                 JPanel postpanel = new JPanel(null);
-                userlabel.setBounds(50,0,100,20);
-                datelabel.setBounds(150,0,100,20);
-                titlelabel.setBounds(50,40,500,20);
+                userlabel.setBounds(200,20,100,20);
+                datelabel.setBounds(300,20,100,20);
+                titlelabel.setBounds(50,50,500,20);
                 bodyarea.setBounds(50,80,1100,50);
                 likebutton.setBounds(50,140,100,35);
                 commentbutton.setBounds(175,140,100,35);
+                first.setBounds(100,20,50,20);
+                last.setBounds(140,20,50,20);
 
-                JLabel likelogo = new JLabel(new ImageIcon(getClass().getResource("heart.png")));
-                JLabel commentlogo = new JLabel(new ImageIcon(getClass().getResource("comment.png")));
+                JLabel likelogo = new JLabel(new ImageIcon(getClass().getResource("Assets/heart.png")));
+                JLabel commentlogo = new JLabel(new ImageIcon(getClass().getResource("Assets/comment.png")));
 
                 likebutton.setBackground(totalwhite);
                 likebutton.add(likelogo);
@@ -166,6 +198,10 @@ public class Homepage extends JFrame implements ActionListener {
                 postpanel.add(bodyarea);
                 postpanel.add(likebutton);
                 postpanel.add(commentbutton);
+                postpanel.add(first);
+                postpanel.add(last);
+                postpanel.add(profilepic);
+
                 postpanel.setBounds(400,y,2500,600);
                 postpanel.setMinimumSize(new Dimension(1250,200));
                 postpanel.setPreferredSize(new Dimension(1250,200));
@@ -179,10 +215,12 @@ public class Homepage extends JFrame implements ActionListener {
                 commentarray [count] = commentbutton;
                 y+=2000;
                 count+=1;
-                if (new Main().checkifliked(this.username,id))
+                if (new Database().checkifliked(this.username,id))
                 {
                     likebutton.setBackground(mycolor);
                 }
+
+                panel2.add(Box.createRigidArea(new Dimension(0,30)));
             }
 
         }catch (Exception e)
@@ -198,10 +236,9 @@ public class Homepage extends JFrame implements ActionListener {
        if (e.getSource() == postButton) {
             if(!postBody.equals("") && !postTitle.equals("")) {
                 System.out.println("in");
-                Main newm = new Main();
-                newm.createpost(postTitle.getText(), postBody.getText(),username);
+                new Database().createpost(postTitle.getText(), postBody.getText(),username);
                 this.dispose();
-                new Homepage(username);
+                new HomePage(username);
                 pagelabel.setText("Home");
             } else {
                 pagelabel.setText("fill out both fields");
@@ -213,13 +250,11 @@ public class Homepage extends JFrame implements ActionListener {
             {
                 if(likearray[i].getBackground() == totalwhite){
                     likearray[i].setBackground(mycolor);
-                    Main ne = new Main();
-                    ne.likeupdatepost(true,idarray[i],username);
+                    new Database().likeupdatepost(true,idarray[i],username);
                     likearray[i].setText(Integer.toString(Integer.valueOf(likearray[i].getText()) + 1));
                 }else {
                     likearray[i].setBackground(totalwhite);
-                    Main ne = new Main();
-                    ne.likeupdatepost(false,idarray[i],username);
+                    new Database().likeupdatepost(false,idarray[i],username);
                     likearray[i].setText(Integer.toString(Integer.valueOf(likearray[i].getText()) - 1));
                 }
             }
@@ -229,7 +264,7 @@ public class Homepage extends JFrame implements ActionListener {
             if(commentarray[i] == e.getSource())
             {
                 this.dispose();
-                new Write_comment(username,idarray[i]);
+                new WriteComment(username,idarray[i]);
             }
         }
         for (int i  = 0; i < userarray.length;i++)
@@ -240,14 +275,29 @@ public class Homepage extends JFrame implements ActionListener {
                 profileuser = profileuser.substring(1,profileuser.length());
                 if(!username.equals(profileuser)) {
                     this.dispose();
-                    new other_profile(username, profileuser);
+                    new OtherProfile(username, profileuser);
                 }else{
                     this.dispose();
-                    new profile(username);
+                    new Profile(username);
 
                 }
             }
         }
+    }
+    static JLabel getScaledImage(String path, int wt, int ht) {
+        try{
+            URL url = new URL(path);
+            BufferedImage image = ImageIO.read(url);
+            BufferedImage resizedImg = new BufferedImage(wt, ht, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = resizedImg.createGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2.drawImage(new ImageIcon(image).getImage(), 0, 0, wt, ht, null);
+            g2.dispose();
+            return new JLabel(new ImageIcon(resizedImg));
+        }catch(Exception e){
+            System.out.println("Image");
+        }
+        return new JLabel("image");
     }
 
 }

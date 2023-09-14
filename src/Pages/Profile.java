@@ -1,25 +1,30 @@
+package Pages;
+
+import Components.FollowerFollowing;
+import Components.LeftBar;
+import Components.RightBar;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-import java.util.Date;
-
-public class profile extends JFrame implements ActionListener {
+import Database.Database;
+public class Profile extends JFrame implements ActionListener {
     String username;
     JPanel panel1, panel2, panel3;
-    JButton cancelbutton, editbutton;
-    JLabel pagelabel;
-    Color mycolor = new Color(15, 186, 129);
-    Color totalwhite = new Color(255, 255, 255);
+    JButton cancelButton, editButton,deletebutton;
+    JLabel pageLabel;
+    Color myColor = new Color(15, 186, 129);
+    Color totalWhite = new Color(255, 255, 255);
     String firstName,lastName,userName ,email,password ;
     JTextField fnField,lnField,userField,EmailField;
     JPasswordField PassField;
-    profile(String username) {
+    public Profile(String username) {
         this.username = username;
-        panel1 = new letbar().sidebar(5, this, username);
+        panel1 = new LeftBar().sidebar(5, this, username);
         this.feed();
-        panel3 = new rightbar().topusers();
+        panel3 = new RightBar().topusers();
 
 
         setSize(1920, 1080);
@@ -39,12 +44,14 @@ public class profile extends JFrame implements ActionListener {
     public void feed() {
         panel2 = new JPanel();
         panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
-        panel2.setBackground(totalwhite);
-        pagelabel = new JLabel("My profile");
+        panel2.setBackground(totalWhite);
+        pageLabel = new JLabel("My profile");
         panel2.add(Box.createRigidArea(new Dimension(5, 30)));
-        panel2.add(pagelabel);
-        pagelabel.setFont(new Font("Arial", Font.PLAIN, 30));
-
+        panel2.add(pageLabel);
+        pageLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+        panel2.setMinimumSize(new Dimension(1250,1000));
+        panel2.setPreferredSize(new Dimension(1250,1000));
+        panel2.setMaximumSize(new Dimension(1250,1000));
 
         JLabel label1, label2, label3, label4, label5, label6;
         label1 = new JLabel("First name");
@@ -54,7 +61,7 @@ public class profile extends JFrame implements ActionListener {
         label5 = new JLabel("Password");
 
         Font myfont  = new Font("Arial", Font.PLAIN, 20);
-        ResultSet data = new Main().userprofile(username);
+        ResultSet data = new Database().userprofile(username);
 
         label1.setFont(myfont);
         label2.setFont(myfont);
@@ -69,6 +76,7 @@ public class profile extends JFrame implements ActionListener {
                 userName = data.getString(4);
                 email = data.getString(5);
                 password = data.getString(6);
+                String url = data.getString(7);
 
                 JPanel profilePanel = new JPanel(null);
 
@@ -97,17 +105,23 @@ public class profile extends JFrame implements ActionListener {
                 EmailField.setEditable(false);
                 PassField.setEditable(false);
 
-                cancelbutton = new JButton("cancel");
-                cancelbutton.setBackground(totalwhite);
-                cancelbutton.setBounds(780,360,100,40);
+                cancelButton = new JButton("cancel");
+                cancelButton.setBackground(totalWhite);
+                cancelButton.setBounds(660,360,100,40);
 
-                editbutton = new JButton("Edit profile");
-                editbutton.setBackground(mycolor);
-                editbutton.setForeground(totalwhite);
-                editbutton.setBounds(900,360,100,40);
+                editButton = new JButton("Edit profile");
+                editButton.setBackground(myColor);
+                editButton.setForeground(totalWhite);
+                editButton.setBounds(780,360,100,40);
 
-                cancelbutton.addActionListener(this);
-                editbutton.addActionListener(this);
+                deletebutton = new JButton("Delete account");
+                deletebutton.setBackground(new Color(254,59,41));
+                deletebutton.setForeground(totalWhite);
+                deletebutton.setBounds(900,360,130,40);
+
+                cancelButton.addActionListener(this);
+                editButton.addActionListener(this);
+                deletebutton.addActionListener(this);
 
                 System.out.println("oiggy");
                 profilePanel.add(label1);
@@ -115,8 +129,9 @@ public class profile extends JFrame implements ActionListener {
                 profilePanel.add(label3);
                 profilePanel.add(label4);
                 profilePanel.add(label5);
-                profilePanel.add(cancelbutton);
-                profilePanel.add(editbutton);
+                profilePanel.add(cancelButton);
+                profilePanel.add(editButton);
+                profilePanel.add(deletebutton);
 
 
                 profilePanel.add(fnField);
@@ -125,7 +140,14 @@ public class profile extends JFrame implements ActionListener {
                 profilePanel.add(EmailField);
                 profilePanel.add(PassField);
 
-                profilePanel.setBackground(totalwhite);
+                profilePanel.setMinimumSize(new Dimension(1250,450));
+                profilePanel.setPreferredSize(new Dimension(1250,450));
+                profilePanel.setMaximumSize(new Dimension(1250,450));
+
+                profilePanel.setBackground(totalWhite);
+
+                panel2.add(Box.createRigidArea(new Dimension(0,30)));
+                panel2.add(HomePage.getScaledImage(url,200,200));
                 panel2.add(profilePanel);
 
 
@@ -134,30 +156,34 @@ public class profile extends JFrame implements ActionListener {
             System.out.println("new error");
         }
 
-        JPanel followlist = new follower_following().createpanel(userName,this);
+        JPanel followlist = new Components.FollowerFollowing().createPanel(userName,this);
         panel2.add(followlist);
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == cancelbutton)
+        if (e.getSource() == cancelButton)
         {
             this.dispose();
-            new profile(username);
-        } else if (e.getSource() == editbutton) {
-            if (editbutton.getText().equals("Edit profile"))
+            new Profile(username);
+        } else if (e.getSource() == editButton) {
+            if (editButton.getText().equals("Edit profile"))
             {
                 fnField.setEditable(true);
                 lnField.setEditable(true);
                 EmailField.setEditable(true);
                 PassField.setEditable(true);
-                editbutton.setText("Save");
+                editButton.setText("Save");
             }else {
                 this.dispose();
-                new Main().Editrow(username,fnField.getText(),lnField.getText(),userField.getText(),EmailField.getText(),PassField.getText());
-                new profile(username);
+                new Database().Editrow(username,fnField.getText(),lnField.getText(),userField.getText(),EmailField.getText(),PassField.getText());
+                new Profile(username);
             }
+        } else if (e.getSource() == deletebutton) {
+            new Database().deleteAccount(username);
+            this.dispose();
+            new Login();
         }
     }
 }

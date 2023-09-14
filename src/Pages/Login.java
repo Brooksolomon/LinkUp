@@ -1,8 +1,10 @@
+package Pages;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import Database.Database;
 public class Login extends JFrame implements ActionListener {
     JPanel panel1;
     JLabel label1,label2,label3;
@@ -10,11 +12,11 @@ public class Login extends JFrame implements ActionListener {
     JPasswordField textfield2;
     JButton button1,button2,button3;
     Font myFont = new Font("Arial", Font.PLAIN, 16);
-    Login(){
+    public Login(){
 
         setSize(450,300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setTitle("Login");
+        setTitle("Pages.Login");
 
         panel1 = new JPanel(null);
         add(panel1);
@@ -71,10 +73,6 @@ public class Login extends JFrame implements ActionListener {
 
         setVisible(true);
     }
-    public static  void main(String[] args) {
-         new Login();
-
-    }
     public void actionPerformed(ActionEvent e)
     {
         if (e.getSource() == button1)
@@ -82,8 +80,7 @@ public class Login extends JFrame implements ActionListener {
             textfield1.setText("");
             textfield2.setText("");
         } else if (e.getSource() == button2) {
-            Main run = new Main();
-            run.Searchuser(textfield1.getText(),textfield2.getText(),label3,this);
+            new Database().Searchuser(textfield1.getText(),textfield2.getText(),label3,this);
         } else if (e.getSource() == button3) {
             Signup sp = new Signup();
             this.dispose();

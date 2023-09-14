@@ -1,9 +1,13 @@
+package Components;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class letbar implements ActionListener{
+import Pages.*;
+
+public class LeftBar implements ActionListener{
     JLabel logo,label1,label2,label3,label4,label5;
     JButton button1,button2,button3,button4,button5,button6;
     Color mycolor = new Color(15,186,129);
@@ -15,20 +19,20 @@ public class letbar implements ActionListener{
         username = u;
         framemain = frame;
         JPanel panel1 = new JPanel(null);
-        logo = new JLabel(new ImageIcon(getClass().getResource("Logo.png")));
-        label1 = new JLabel(new ImageIcon(getClass().getResource("homeIcon.png")));
-        label2 = new JLabel(new ImageIcon(getClass().getResource("posts.png")));
-        label3 = new JLabel(new ImageIcon(getClass().getResource("comment.png")));
-        label4 = new JLabel(new ImageIcon(getClass().getResource("like.png")));
-        label5 = new JLabel(new ImageIcon(getClass().getResource("user.png")));
+        logo = new JLabel(new ImageIcon(getClass().getResource("Assets/Logo.png")));
+        label1 = new JLabel(new ImageIcon(getClass().getResource("Assets/HomeIcon.png")));
+        label2 = new JLabel(new ImageIcon(getClass().getResource("Assets/posts.png")));
+        label3 = new JLabel(new ImageIcon(getClass().getResource("Assets/comment.png")));
+        label4 = new JLabel(new ImageIcon(getClass().getResource("Assets/like.png")));
+        label5 = new JLabel(new ImageIcon(getClass().getResource("Assets/user.png")));
 
 
         button1 = new JButton("Home");
-        button2 = new JButton("posts");
-        button3 = new JButton("comments");
+        button2 = new JButton("Posts");
+        button3 = new JButton("Comments");
         button4 = new JButton("Likes");
         button5 = new JButton("Profile");
-        button6 = new JButton("Log out");
+        button6 = new JButton("Logout");
 
         button1.setBackground(totalwhite);
         button2.setBackground(totalwhite);
@@ -94,24 +98,24 @@ public class letbar implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == button1){
             framemain.dispose();
-            new Homepage(username);
+            new HomePage(username);
         }
         else if (e.getSource()==button2)
         {
             framemain.dispose();
-            new posts(username);
+            new Posts(username);
         } else if (e.getSource() == button3) {
             framemain.dispose();
-            new comments(username);
+            new Comments(username);
         } else if (e.getSource() ==button4) {
             framemain.dispose();
-            new likes(username);
+            new Likes(username);
         } else if (e.getSource() == button6) {
             framemain.dispose();
             new Login();
         } else if (e.getSource() == button5) {
             framemain.dispose();
-            new profile(username);
+            new Profile(username);
         }
     }
 }

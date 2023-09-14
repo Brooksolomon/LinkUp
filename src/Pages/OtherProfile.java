@@ -1,11 +1,15 @@
+package Pages;
+
+import Components.LeftBar;
+import Components.RightBar;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-import java.sql.SQLOutput;
-
-public class other_profile extends JFrame implements ActionListener {
+import Database.Database;
+public class OtherProfile extends JFrame implements ActionListener {
 
 
     String username;
@@ -18,12 +22,12 @@ public class other_profile extends JFrame implements ActionListener {
     String firstName,lastName,userName ,email,password ;
     JTextField fnField,lnField,userField,EmailField;
 
-    other_profile(String username,String profileuser) {
+    public OtherProfile(String username, String profileuser) {
         this.username = username;
         this.profileuser = profileuser;
-        panel1 = new letbar().sidebar(0, this, username);
+        panel1 = new LeftBar().sidebar(0, this, username);
         this.feed();
-        panel3 = new rightbar().topusers();
+        panel3 = new RightBar().topusers();
 
 
         setSize(1920, 1080);
@@ -58,7 +62,7 @@ public class other_profile extends JFrame implements ActionListener {
 
         Font myfont  = new Font("Arial", Font.PLAIN, 20);
         System.out.println(profileuser);
-        ResultSet data = new Main().userprofile(profileuser);
+        ResultSet data = new Database().userprofile(profileuser);
         System.out.println("your data:" + data);
         label1.setFont(myfont);
         label2.setFont(myfont);
@@ -99,7 +103,20 @@ public class other_profile extends JFrame implements ActionListener {
                 userField.setEditable(false);
                 EmailField.setEditable(false);
 
+                fnField.setBackground(totalwhite);
+                lnField.setBackground(totalwhite);
+                userField.setBackground(totalwhite);
+                EmailField.setBackground(totalwhite);
 
+                fnField.setBorder(null);
+                lnField.setBorder(null);
+                userField.setBorder(null);
+                EmailField.setBorder(null);
+
+                fnField.setFont(new Font("Arial",2,15));
+                lnField.setFont(new Font("Arial",2,15));
+                userField.setFont(new Font("Arial",2,15));
+                EmailField.setFont(new Font("Arial",2,15));
 
                 followbutton = new JButton("Follow");
                 followbutton.setBackground(mycolor);
@@ -107,9 +124,9 @@ public class other_profile extends JFrame implements ActionListener {
                 followbutton.setBounds(900,60,100,40);
 
                 followbutton.addActionListener(this);
-                if (new Main().checkiffollows(username,profileuser))
+                if (new Database().checkiffollows(username,profileuser))
                 {
-                    System.out.println("DO i follow :" + new Main().checkiffollows(username,profileuser));
+                    System.out.println("DO i follow :" + new Database().checkiffollows(username,profileuser));
                     followbutton.setBackground(new Color(254,59,41));
                     followbutton.setText("unfollow");
                 }
@@ -137,6 +154,9 @@ public class other_profile extends JFrame implements ActionListener {
             System.out.println("new error1");
         }
 
+        JPanel followlist = new Components.FollowerFollowing().createPanel(userName,this);
+        panel2.add(followlist);
+
     }
 
 
@@ -158,12 +178,12 @@ public class other_profile extends JFrame implements ActionListener {
             {
                 followbutton.setBackground(new Color(254,59,41));
                 followbutton.setText("unfollow");
-                new Main().createfollow(username,profileuser,true);
+                new Database().createfollow(username,profileuser,true);
             }
             else{
                 followbutton.setBackground(mycolor);
                 followbutton.setText("follow");
-                new Main().createfollow(username,profileuser,false);
+                new Database().createfollow(username,profileuser,false);
             }
 
         }

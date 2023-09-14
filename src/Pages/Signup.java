@@ -1,14 +1,16 @@
+package Pages;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import Database.Database;
 public class Signup extends JFrame implements ActionListener {
     JPanel panel1;
     JLabel label1,label2,label3,label4,label5,label6,label7;
-    JTextField textfield1,textfield2,textfield3,textfield4;
+    JTextField textfield1,textfield2,textfield3,textfield4,textField7;
     JPasswordField textfield5,textfield6;
     JButton button1 ,button2,button3;
     Font myfont = new Font("Arial", Font.PLAIN, 16);
@@ -25,6 +27,8 @@ public class Signup extends JFrame implements ActionListener {
         label2 = new JLabel("Last Name:");
         label3 = new JLabel("Username:");
         label4 = new JLabel("Email:");
+        JLabel photo = new JLabel("Photo:");
+
         label5 = new JLabel("Password:");
         label6 = new JLabel("Re-enter password:");
         label7  = new JLabel("");
@@ -132,15 +136,15 @@ public class Signup extends JFrame implements ActionListener {
                 label7.setText("Passwords don't match");
             } else if (!mat.matches()) {
                 label7.setText("not a valid email address");
-            } else if (new Main().Searchuser(textfield3.getText(),textfield5.getText(),new JLabel(),this)) {
+            } else if (new Database().Searchuser(textfield3.getText(),textfield5.getText(),new JLabel(),this)) {
                 label7.setText("Username Taken");
             } else {
-                Main run = new Main();
+                Database run = new Database();
                 run.Createuser(fName, lName, userName, email, password);
                 label7.setForeground(Color.green);
                 label7.setText("Account Created");
                 this.dispose();
-                new Homepage(userName);
+                new HomePage(userName);
             }
 
         }

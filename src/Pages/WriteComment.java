@@ -1,11 +1,16 @@
+package Pages;
+
+import Components.LeftBar;
+import Components.RightBar;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.util.Date;
-
-public class Write_comment extends JFrame implements ActionListener {
+import Database.Database;
+public class WriteComment extends JFrame implements ActionListener {
     String username;
     JButton likebutton;
     JButton[] likearray = new JButton[15];
@@ -23,13 +28,13 @@ public class Write_comment extends JFrame implements ActionListener {
     Color totalwhite  = new Color(255,255,255);
     int Postid;
 
-    Write_comment(String username,int Postid)
+    WriteComment(String username, int Postid)
     {
         this.username = username;
         this.Postid = Postid;
-        panel1 = new letbar().sidebar(0,this,username);
+        panel1 = new LeftBar().sidebar(0,this,username);
         this.feed();
-        panel3  = new rightbar().topusers();
+        panel3  = new RightBar().topusers();
 
         setSize(1920,1080);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -60,7 +65,7 @@ public class Write_comment extends JFrame implements ActionListener {
         panel2.add(pagelabel);
         pagelabel.setFont(new Font("Arial", Font.PLAIN, 30));
 
-        ResultSet posts = new Main().fetchCurrentPost(Postid);
+        ResultSet posts = new Database().fetchCurrentPost(Postid);
         try {
             while (posts.next()) {
                 int id = posts.getInt(1);
@@ -97,7 +102,7 @@ public class Write_comment extends JFrame implements ActionListener {
                 titlelabel.setBounds(50, 40, 500, 20);
                 bodyarea.setBounds(50, 80, 1100, 50);
                 likebutton.setBounds(50, 140, 100, 35);
-                JLabel likelogo = new JLabel(new ImageIcon(getClass().getResource("heart.png")));
+                JLabel likelogo = new JLabel(new ImageIcon(getClass().getResource("Assets/heart.png")));
                 likebutton.setBackground(totalwhite);
                 likebutton.add(likelogo);
 
@@ -132,7 +137,7 @@ public class Write_comment extends JFrame implements ActionListener {
             System.out.println(e);
             System.out.println("noooo");
         }
-        posts = new Main().fetchCurrentComments(Postid);
+        posts = new Database().fetchCurrentComments(Postid);
 
         System.out.println(posts);
         int y = 0;
@@ -187,19 +192,17 @@ public class Write_comment extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
        if (e.getSource() == postButton) {
-            new Main().createcomment(commentInput.getText(),username,Postid);
+            new Database().createcomment(commentInput.getText(),username,Postid);
             this.dispose();
-            new Write_comment(username,Postid);
+            new WriteComment(username,Postid);
         } else if (e.getSource() == likebutton) {
             if(likebutton.getBackground() == totalwhite){
                 likebutton.setBackground(mycolor);
-                Main ne = new Main();
-                ne.likeupdatepost(true,Postid,username);
+                new Database().likeupdatepost(true,Postid,username);
                 likebutton.setText(Integer.toString(Integer.valueOf(likebutton.getText()) + 1));
             }else {
                 likebutton.setBackground(totalwhite);
-                Main ne = new Main();
-                ne.likeupdatepost(false,Postid,username);
+                new Database().likeupdatepost(false,Postid,username);
                 likebutton.setText(Integer.toString(Integer.valueOf(likebutton.getText()) - 1));
             }
         }
